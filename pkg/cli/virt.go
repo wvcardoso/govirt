@@ -30,14 +30,14 @@ func SetupVirtCmd() *cobra.Command {
 		},
 	}
 
-	command.Flags().StringVar(&args.IP, "vc-ip", "", "vcenter endpoint")
-	command.Flags().StringVar(&args.User, "vc-user", "", "vcenter user")
-	command.Flags().StringVar(&args.Password, "vc-pass", "", "vcenter password")
+	command.Flags().StringVar(&args.IP, "ip", "", "vcenter endpoint")
+	command.Flags().StringVar(&args.User, "user", "", "vcenter user")
+	command.Flags().StringVar(&args.Password, "pass", "", "vcenter password")
 	command.Flags().BoolVar(&args.SkipInsecure, "skip-insecure", true, "true to ignore")
 
-	command.MarkFlagRequired("vcenter-ip")
-	command.MarkFlagRequired("vcenter-user")
-	command.MarkFlagRequired("vcenter-password")
+	command.MarkPersistentFlagRequired("ip")
+	command.MarkPersistentFlagRequired("user")
+	command.MarkPersistentFlagRequired("pass")
 
 	return command
 }
@@ -50,7 +50,7 @@ func RunVirt(args *VirtArgs) error {
 
 	con, err := vc.Conn(vCenterURL, args.User, args.Password, args.SkipInsecure)
 	if err != nil {
-		return fmt.Errorf("%s", err.Error())
+		log.Errorf("Ocorreu um erro: %v", err)
 	}
 
 	vmName := "vm0001"

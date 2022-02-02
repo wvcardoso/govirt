@@ -1,4 +1,4 @@
-module govirt
+module github.com/wvcardoso/govirt
 
 go 1.15
 

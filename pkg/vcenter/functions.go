@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/url"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/vmware/govmomi/property"
 	"github.com/vmware/govmomi/session/cache"
 	"github.com/vmware/govmomi/view"
@@ -21,7 +23,7 @@ func Conn(VC_URL, User, Password string, insecure bool) (*Config, error) {
 
 	urlConnect, err := url.Parse(VC_URL)
 	if err != nil {
-		return nil, fmt.Errorf(err.Error())
+		log.Errorf("Ocorreu um erro: %v", err)
 	}
 	urlConnect.User = url.UserPassword(User, Password)
 
@@ -34,7 +36,7 @@ func Conn(VC_URL, User, Password string, insecure bool) (*Config, error) {
 	client := new(vmwarecli.Client)
 	err = sessionCache.Login(ctx, client, nil)
 	if err != nil {
-		return nil, fmt.Errorf(err.Error())
+		log.Errorf("Ocorreu um erro: %v", err)
 	}
 
 	var VMWareConfig Config
@@ -48,18 +50,19 @@ func Conn(VC_URL, User, Password string, insecure bool) (*Config, error) {
 func (conn *Config) GetAllVMs(vmName string) {
 
 	manager := view.NewManager(conn.VMClient)
+
 	kind := []string{"VirtualMachine"}
 
 	viewer, err := manager.CreateContainerView(conn.Context, conn.VMClient.ServiceContent.RootFolder, kind, true)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Errorf("Ocorreu um erro: %v", err)
 	}
 
 	var vms []mo.VirtualMachine
 
 	err = viewer.RetrieveWithFilter(conn.Context, kind, []string{"name"}, &vms, property.Filter{"name": vmName})
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Errorf("Ocorreu um erro: %v", err)
 	}
 
 	//todo: verificando se há apenas 1 VMs
