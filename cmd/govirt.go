@@ -1,7 +1,7 @@
 package main
 
 import (
-	"govirt/pkg/cli"
+	"github.com/wvcardoso/govirt/pkg/cli"
 )
 
 func main() {

@@ -3,8 +3,7 @@ package cli
 import (
 	"fmt"
 
-	//vc "github.com/wvcardoso/govirt/pkg/vcenter"
-	vc "govirt/pkg/vcenter"
+	vc "github.com/wvcardoso/govirt/pkg/vcenter"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
